@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Header, HTTPException, status
-from typing import Annotated
 from bson.objectid import ObjectId
 
 from ..db.database import collection_profile, collection_users
