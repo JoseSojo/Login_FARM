@@ -8,12 +8,7 @@ from ..schemas.auth_sch import individual_user, profile_serial
 router = APIRouter(prefix='/user')
 
 @router.get('/profile')
-async def get_user_by_id(token: Header):
-    
-    if token == None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, 'DANGER_USER_PROFILE')
-
-    x = verify_access_token(token, 'DANGER_USER_PROFILE_JWT')
+async def get_user_by_id():
     
     
 
