@@ -7,6 +7,6 @@ import { AuthProvide } from './context/SessionContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <AuthProvide>
-    <App />
+      <App />
   </AuthProvide>,
 )
