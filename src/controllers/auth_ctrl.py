@@ -14,20 +14,17 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/login')
 
 router = APIRouter(prefix='/auth')
 
-def GenerateLogs(msg, code):
-    return HTTPException({'code':code, 'response':msg})
-
 @router.post('/register')
 async def register(data_requets: AuthRegister):
     try:
         data = dict(data_requets)
         valid_e = collection_users.find_one({ 'email': data['email'] })
         if valid_e:
-            return HTTPException(401, 'DANGER_AUTH_REGISTER_EMAIL_REFUSED')
+            raise HTTPException(401, 'DANGER_AUTH_REGISTER_EMAIL_REFUSED')
         
         valid_u = collection_users.find_one({ 'username':data['username'] })
         if valid_u:
-            return HTTPException(401, 'DANGER_AUTH_REGISTER_USERNAME_REFUSED')
+            raise HTTPException(401, 'DANGER_AUTH_REGISTER_USERNAME_REFUSED')
 
         profile_result = collection_profile.insert_one({'photo_profile':'', 'country':'','city':''})
 
@@ -47,7 +44,7 @@ async def register(data_requets: AuthRegister):
           
 
     except Exception as e:
-        return GenerateLogs(400, 'DANGER_AUTH_REGISTER')
+        raise HTTPException(400, 'DANGER_AUTH_REGISTER')
 
 @router.post('/login')
 async def login(data_requets: AuthLogin):

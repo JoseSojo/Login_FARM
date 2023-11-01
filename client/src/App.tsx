@@ -1,27 +1,27 @@
-import { Route, Routes } from 'react-router-dom';
-//import { RouterNotProtect, RouterProtect } from './pages/RouterProtected';
+import { RouterNotProtect, RouterProtect } from './pages/RouterProtected';
 import { BasciLayout } from './layouts/BasicLayout';
 import { InitPage } from './pages/Init';
 import { LoginPage } from './pages/Login';
 import { RegisterPage } from './pages/Register';
 import { ProfilePage } from './pages/Profile';
 import { HomePage } from './pages/Home';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-/*const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: '/',
     element: <RouterNotProtect />,
     children: [
       {
         path: '/',
-        element: <h1>Index</h1>
+        element: <InitPage />
       },
       {
         path: '/login',
-        element: <h1>Login</h1>
+        element: <LoginPage />
       },{
         path: '/register',
-        element: <h1>Register</h1>
+        element: <RegisterPage />
       }
     ]
   },
@@ -31,23 +31,21 @@ import { HomePage } from './pages/Home';
     children: [
       {
         path:'/profile',
-        element: <h2>Profile</h2>
+        element: <ProfilePage />
+      },
+      {
+        path:'/home',
+        element: <HomePage />
       }
     ]
   }
-])*/
+])
 
 function App() {
   
   return (
     <BasciLayout>
-    <Routes>
-      <Route path='/' element={<InitPage />} />
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/register' element={<RegisterPage />} />
-      <Route path='/profile' element={<ProfilePage />} />
-      <Route path='/home' element={<HomePage />} />
-    </Routes>
+      <RouterProvider router={router} />
     </BasciLayout>
   )
 }
