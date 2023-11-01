@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 //import { RouterNotProtect, RouterProtect } from './pages/RouterProtected';
-//import { BasciLayout } from './layouts/BasicLayout';
+import { BasciLayout } from './layouts/BasicLayout';
 import { InitPage } from './pages/Init';
 import { LoginPage } from './pages/Login';
 import { RegisterPage } from './pages/Register';
@@ -40,6 +40,7 @@ import { HomePage } from './pages/Home';
 function App() {
   
   return (
+    <BasciLayout>
     <Routes>
       <Route path='/' element={<InitPage />} />
       <Route path='/login' element={<LoginPage />} />
@@ -47,6 +48,7 @@ function App() {
       <Route path='/profile' element={<ProfilePage />} />
       <Route path='/home' element={<HomePage />} />
     </Routes>
+    </BasciLayout>
   )
 }
 
