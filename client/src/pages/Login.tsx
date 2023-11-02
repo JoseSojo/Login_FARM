@@ -2,8 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { LoginData } from "../types/AuthType";
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
+import { useAuth } from "../hooks/useAuth";
 
 export const LoginPage = () => {
+    const auth = useAuth();
     const [data, setData] = useState<LoginData>({email:'',password:''});
     const navigate = useNavigate();
 
@@ -15,12 +17,16 @@ export const LoginPage = () => {
         setData(newData);
     }
 
-    const HandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const HandleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  
-        const resultHooks = useLogin(data);
-        console.log('result', resultHooks);
+        const resultHooks = await useLogin(data);
+        console.log('this is result:', resultHooks);
 
-        if (resultHooks) return navigate('/profile');
+        if (resultHooks !== undefined && resultHooks !== false) {
+
+            auth.updateSession(true);
+            return navigate('/profile');
+        }
         console.log('Oops... algo anda mal');
     }    
 
@@ -37,7 +43,7 @@ export const LoginPage = () => {
                     <input onChange={handleChange} type='password' className='p-3 rounded-md border' name='password' placeholder='steven123' />
                 </div>
                 <div className='flex justify-end mt-10'>
-                    <input type='submit' className='p-3 rounded-md border bg-amber-500 hover:bg-amber-600 font-bold text-gray-950 w-[50%]' name='username' placeholder='steven123' />
+                    <input type='submit' className='cursor-pointer p-3 rounded-md border bg-amber-500 hover:bg-amber-600 font-bold text-gray-950 w-[50%]' name='username' placeholder='steven123' />
                 </div>
             </form>
         </div>

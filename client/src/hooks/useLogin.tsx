@@ -1,8 +1,8 @@
 import { BASIC_URL } from "../constans";
-import { LoginData, ResultLoginSuccess } from "../types/AuthType";
+import { LoginData } from "../types/AuthType";
 
 export const useLogin = (data: LoginData) => {
-    const SendDataPost = (data: LoginData) => {
+    const SendDataPost = async (data: LoginData): Promise<boolean> => {
         const RequesOptions = {
             method: 'POST',
             headers: {
@@ -12,41 +12,37 @@ export const useLogin = (data: LoginData) => {
         }
 
         try {
-            fetch(`${BASIC_URL}/auth/login`, RequesOptions)
-                .then((res) => {
-                    console.log(res);
-                    if (!res.ok) return res.ok as boolean;   
-                    return res.json();
-                })
-                .then((response: ResultLoginSuccess) => {
-                    if(response.response == 'SUCCESS_AUTH_LOGIN') {
-                        const saveUser = {
-                            id: `${response.body.user.id}`,
-                            username: `${response.body.user.username}`,
-                            password: '',
-                            email: `${response.body.user.email}`,
-                            date: `${response.body.user.date}`,
-                            profile_id: `${response.body.user.profile_id}`
-                        }
+            const res = await fetch(`${BASIC_URL}/auth/login`, RequesOptions);
+            console.log(res);
+            if (!res.ok) throw new Error('ERROR_IN_LOGIN');
+            window.localStorage.setItem('session', JSON.stringify(true));
 
-                        const saveProfile = {
-                            id: `${response.body.profile.id}`,
-                            country: `${response.body.profile.country}`,
-                            city: `${response.body.profile.city}`,
-                            photo_profile: `${response.body.profile.photo_profile}`
-                        }  
+            const response = await res.json();
+            if(response.response == 'SUCCESS_AUTH_LOGIN') {
+                const saveUser = {
+                    id: `${response.body.user.id}`,
+                    username: `${response.body.user.username}`,
+                    password: '',
+                    email: `${response.body.user.email}`,
+                    date: `${response.body.user.date}`,
+                    profile_id: `${response.body.user.profile_id}`
+                }
 
-                        window.localStorage.setItem('token', `${response.token}`)
-                        window.localStorage.setItem('profile', JSON.stringify(saveProfile));
-                        window.localStorage.setItem('user', JSON.stringify(saveUser));
-                        window.localStorage.setItem('session', JSON.stringify(true));
+                const saveProfile = {
+                    id: `${response.body.profile.id}`,
+                    country: `${response.body.profile.country}`,
+                    city: `${response.body.profile.city}`,
+                    photo_profile: `${response.body.profile.photo_profile}`
+                }  
 
-                        return true
-                    }
-                    throw new Error ('IS_NOT_MESAGE_ESPECIFIQUITE')
-                })
+                window.localStorage.setItem('token', `${response.token}`)
+                window.localStorage.setItem('profile', JSON.stringify(saveProfile));
+                window.localStorage.setItem('user', JSON.stringify(saveUser));
 
-            return true
+                return true
+            }
+
+            return false
         } catch (error) {
             console.log(error);
             return false
@@ -56,8 +52,7 @@ export const useLogin = (data: LoginData) => {
     try {
         if(data.email == '' && data.password == '') throw new Error('DATA_NOT_COMPLETED')
 
-        const resultQuery: boolean = SendDataPost(data)
-        return resultQuery
+        return SendDataPost(data)
         
     } catch (error) {
         console.log(error)

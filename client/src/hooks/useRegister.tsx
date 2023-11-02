@@ -1,8 +1,8 @@
 import { BASIC_URL } from "../constans";
 import { RegisterData } from "../types/AuthType";
 
-export const useRegister = (data: RegisterData): boolean => {
-    const SendDataPost = (data: RegisterData): boolean => {
+export const useRegister = (data: RegisterData) => {
+    const SendDataPost = async (data: RegisterData) => {
         const RequesOptions = {
             method: 'POST',
             headers: {
@@ -12,17 +12,16 @@ export const useRegister = (data: RegisterData): boolean => {
         }
 
         try {
-            fetch(`${BASIC_URL}/auth/register`, RequesOptions)
-                .then((res) => {
-                    if (!res.ok) return res.ok as boolean;   
-                    return res.json();
-                })
-                .then((response) => {
-                    if(response.response == 'SUCCESS_AUTH_REGISTER') return true
-                })
+            const res = await fetch(`${BASIC_URL}/auth/register`, RequesOptions)
 
-            return true
+            console.log(res);
+            if (!res.ok) throw new Error('ERROR_IN_REGISTER');
+            const response = res.json();
+
+            console.log(response)
+            return response
         } catch (error) {
+            console.log(error);
             return false
         }
     }
@@ -30,8 +29,14 @@ export const useRegister = (data: RegisterData): boolean => {
     try {
         if(data.email == '' && data.password == '' && data.username == '' ) throw new Error('DATA_NOT_COMPLETED')
 
-        const resultQuery: boolean = SendDataPost(data)
-        return resultQuery
+        SendDataPost(data)
+            .then(val => {
+                return val
+            })
+            .catch(err => {
+                console.log(err);
+                return false
+            })
         
     } catch (error) {
         console.log(error)

@@ -26,10 +26,10 @@ export const RegisterPage = () => {
     const HandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  
         const resultHooks = useRegister(data);
-        console.log('result', resultHooks);
 
-        if (resultHooks) return navigate('/login');
-        
+        console.log(resultHooks);
+        if (resultHooks !== false && resultHooks !== undefined) return navigate('/login');
+    
         console.log('Oops... algo anda mal');
     }    
 
