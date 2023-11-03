@@ -9,5 +9,7 @@ client = MongoClient(os.environ.get('URI'))
 mydb = client['auth_simple']
 collection_profile = mydb['profile']
 collection_users = mydb['users']
+collection_task = mydb['task']
+
 
 

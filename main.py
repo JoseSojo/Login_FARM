@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 #from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from src.controllers import auth_ctrl, user_ctrl
+from src.controllers import auth_ctrl, user_ctrl, task_ctrl
 
 app = FastAPI()
 
@@ -16,4 +16,6 @@ app.add_middleware(
 
 app.include_router(auth_ctrl.router)
 app.include_router(user_ctrl.router)
+app.include_router(task_ctrl.router)
 #app.mount('/static', StaticFiles(directory='static'), name='static') # static files
+

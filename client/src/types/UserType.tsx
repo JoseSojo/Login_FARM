@@ -13,3 +13,8 @@ export interface ProfileData {
     id: string,
     photo_profile: string,
 }
+
+export interface CompletedUser {
+    user: UserData,
+    profile: ProfileData
+}
